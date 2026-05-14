@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'game/widgets/game_screen.dart';
 
 // ─── Colors ───────────────────────────────────────────────────────────────────
 const kBg = Color(0xFF1A0A0A);
@@ -106,7 +107,7 @@ class ClawKingdomApp extends StatelessWidget {
     return MaterialApp(
       title: 'ClawKingdom',
       theme: buildTheme(),
-      home: const KingdomMainScreen(),
+      home: const RootScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -738,6 +739,52 @@ class _StatBar extends StatelessWidget {
                 minHeight: 8,
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Root Screen with Bottom NavBar ──────────────────────────────────────────
+class RootScreen extends StatefulWidget {
+  const RootScreen({super.key});
+
+  @override
+  State<RootScreen> createState() => _RootScreenState();
+}
+
+class _RootScreenState extends State<RootScreen> {
+  int _currentIndex = 0;
+
+  final _screens = const [
+    KingdomMainScreen(),
+    GameScreen(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (i) => setState(() => _currentIndex = i),
+        backgroundColor: kCard,
+        selectedItemColor: kPaleGold,
+        unselectedItemColor: kBronze,
+        selectedLabelStyle: GoogleFonts.notoSerifKr(fontSize: 11),
+        unselectedLabelStyle: GoogleFonts.notoSerifKr(fontSize: 11),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.groups),
+            label: '영웅 명부',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: '왕국 맵',
           ),
         ],
       ),
